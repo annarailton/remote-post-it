@@ -23,7 +23,7 @@
       <form id="ticket-form">
         <div class="field">
           <label for="task">Task description</label>
-          <textarea id="task" name="task" rows="3" required placeholder="What needs doing?"></textarea>
+          <textarea id="task" name="task" rows="3" maxlength="1000" required placeholder="What needs doing?"></textarea>
         </div>
         <fieldset class="field">
           <legend>Category <span class="optional">Optional</span></legend>
@@ -37,7 +37,7 @@
         </fieldset>
         <div class="field">
           <label for="deadline">Deadline <span class="optional">Optional</span></label>
-          <input type="date" id="deadline" name="deadline">
+          <input type="date" min="0001-01-01" max="9999-12-31" id="deadline" name="deadline">
         </div>
         <button class="print" type="submit">Print</button>
         <p id="form-status" class="status" role="status" aria-live="polite"></p>

@@ -1,5 +1,8 @@
-import { requireOwner } from './auth.js';
+import { requireOwner, ownerSession } from './auth.js';
 
+import { saveTicket, storageError } from './tickets.js';
+
+let saving = false;
 const form = document.querySelector('#ticket-form');
 const task = document.querySelector('#task');
 const category = document.querySelector('#category');
@@ -21,14 +24,30 @@ form.addEventListener('input', () => {
   status.textContent = '';
 });
 
-form.addEventListener('submit', (event) => {
+form.addEventListener('submit', async (event) => {
   event.preventDefault();
-  if (!requireOwner()) return;
+  if (saving || !requireOwner()) return;
   if (!task.value.trim()) {
     task.setCustomValidity('Enter a task description.');
     task.reportValidity();
     return;
   }
-  // Connect this to the persistent queue once authentication and storage are ready.
-  status.textContent = 'Printing isn’t connected yet. Your task has not been sent.';
+  const session = ownerSession();
+  const controls = [...form.querySelectorAll('input, textarea, button')];
+  const ticket = { task: task.value, category: category.value, deadline: document.querySelector('#deadline').value };
+  saving = true;
+  controls.forEach(control => { control.disabled = true; });
+  status.textContent = 'Saving…';
+  try {
+    await saveTicket(ticket);
+    if (ownerSession() !== session) return;
+    form.reset();
+    categoryButtons.forEach(button => button.setAttribute('aria-pressed', 'false'));
+    status.textContent = 'Saved and queued. Printer availability is not yet connected.';
+  } catch (error) {
+    if (ownerSession() === session) status.textContent = storageError(error);
+  } finally {
+    saving = false;
+    controls.forEach(control => { control.disabled = false; });
+  }
 });

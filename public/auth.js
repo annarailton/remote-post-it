@@ -7,11 +7,27 @@ const signIn = document.querySelector('#sign-in');
 const signOutButton = document.querySelector('#sign-out');
 let authorized = false;
 let revision = 0;
+const ownerListeners = new Set();
+
+export function ownerSession() {
+  return authorized ? revision : null;
+}
+
+export function onOwnerChange(listener) {
+  ownerListeners.add(listener);
+  listener(ownerSession());
+  return () => ownerListeners.delete(listener);
+}
+
+function notifyOwner() {
+  for (const listener of ownerListeners) listener(ownerSession());
+}
 
 function lock() {
   authorized = false;
   content.hidden = true;
   panel.hidden = false;
+  notifyOwner();
 }
 
 function clearPrivateContent() {
@@ -69,6 +85,7 @@ async function initialize() {
         authorized = true;
         panel.hidden = true;
         content.hidden = false;
+        notifyOwner();
       } catch {
         if (currentRevision !== revision) return;
         lock();

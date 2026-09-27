@@ -9,9 +9,30 @@ service cloud.firestore {
     }
 
     match /jobs/{jobId} {
+      function validJob() {
+        let data = request.resource.data;
+        let fields = ['task', 'category', 'deadline', 'submittedAt', 'status', 'sentAt', 'error', 'reprintOf'];
+        return data.keys().hasAll(fields) && data.keys().hasOnly(fields)
+          && data.task is string && data.task.size() > 0 && data.task.size() <= 1000
+          && data.task.matches('[\\s\\S]*[^\\s][\\s\\S]*')
+          && data.category in [null, 'Council', 'Work', 'Life admin']
+          && (data.deadline == null || (data.deadline is string
+            && data.deadline.matches('[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])')))
+          && data.submittedAt == request.time
+          && data.status == 'queued' && data.sentAt == null && data.error == null
+          && data.reprintOf == null;
+      }
+
       allow read: if isOwner();
-      // Writes stay closed until the queue integration adds field validation.
-      allow write: if false;
+      allow create: if isOwner() && validJob();
+      // Reprint resets the existing job; ticket contents and submission date stay fixed.
+      // Do not reset a job while the Pi is actively sending it.
+      allow update: if isOwner()
+        && resource.data.status in ['queued', 'sent', 'failed']
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'sentAt', 'error'])
+        && request.resource.data.status == 'queued'
+        && request.resource.data.sentAt == null && request.resource.data.error == null;
+      allow delete: if false;
     }
     match /printers/{printerId} {
       allow read: if isOwner();

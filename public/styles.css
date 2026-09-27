@@ -79,3 +79,5 @@ td:first-child, td:nth-child(4) { min-width: 125px; }
 button:disabled { cursor: wait; opacity: 0.65; }
 .account-footer { margin-top: 18px; text-align: center; }
 .account-footer button { border: 0; padding: 8px; background: none; color: #405047; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+
+.job-status { display: block; margin-top: 4px; color: #58665e; }
