@@ -2,6 +2,8 @@
 
 Run as `pi` with Python 3.7+, `openssl`, internet access and the USB printer at `/dev/usb/lp0`. No Python packages are needed.
 
+This is currently running on a Raspberry Pi B+ V1.2 (ARMv6), with Raspbian 10 (Buster) and Python 3.7.3.
+
 ## Setup
 
 Clone the repo on the Pi or `scp` over the `pi` directory.
