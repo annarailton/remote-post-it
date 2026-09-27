@@ -14,6 +14,12 @@
         <p class="eyebrow">Do more</p>
         <h1>Anna TODO ticket</h1>
       </header>
+      <section id="auth-panel" class="auth-panel" aria-label="Sign in">
+        <p id="auth-status" class="status" role="status">Checking sign-in…</p>
+        <button id="sign-in" class="print" type="button" disabled>Sign in with Google</button>
+      </section>
+      <noscript>JavaScript is required to sign in.</noscript>
+      <div id="protected-content" hidden>
       <section class="history-panel" aria-labelledby="history-heading">
         <h2 id="history-heading">History</h2>
         <div class="table-scroll" role="region" aria-label="Ticket history table" tabindex="0">
@@ -34,6 +40,10 @@
         </div>
         <p id="history-status" class="status" role="status" aria-live="polite"></p>
       </section>
+        <footer class="account-footer">
+          <button id="sign-out" type="button">Sign out</button>
+        </footer>
+      </div>
     </main>
   </body>
 </html>

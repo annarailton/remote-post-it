@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#f5f6f2">
     <title>Anna TODO ticket</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="app.js" defer></script>
+    <script src="app.js" type="module"></script>
   </head>
   <body>
     <main>
@@ -14,6 +14,12 @@
         <p class="eyebrow">Do more</p>
         <h1>Anna TODO ticket</h1>
       </header>
+      <section id="auth-panel" class="auth-panel" aria-label="Sign in">
+        <p id="auth-status" class="status" role="status">Checking sign-in…</p>
+        <button id="sign-in" class="print" type="button" disabled>Sign in with Google</button>
+      </section>
+      <noscript>JavaScript is required to sign in.</noscript>
+      <div id="protected-content" hidden>
       <form id="ticket-form">
         <div class="field">
           <label for="task">Task description</label>
@@ -39,6 +45,10 @@
       <footer class="page-footer">
         <a href="history.html">History</a>
       </footer>
+        <footer class="account-footer">
+          <button id="sign-out" type="button">Sign out</button>
+        </footer>
+      </div>
     </main>
   </body>
 </html>

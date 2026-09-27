@@ -1,3 +1,5 @@
+import { requireOwner } from './auth.js';
+
 const form = document.querySelector('#ticket-form');
 const task = document.querySelector('#task');
 const category = document.querySelector('#category');
@@ -21,6 +23,7 @@ form.addEventListener('input', () => {
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
+  if (!requireOwner()) return;
   if (!task.value.trim()) {
     task.setCustomValidity('Enter a task description.');
     task.reportValidity();

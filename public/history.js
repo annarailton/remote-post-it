@@ -1,3 +1,5 @@
+import { requireOwner } from './auth.js';
+
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
 function formatDeadline(value) {
@@ -39,6 +41,7 @@ export function renderHistory(tickets) {
     button.textContent = 'Reprint';
     button.setAttribute('aria-label', `Reprint: ${ticket.task}`);
     button.addEventListener('click', () => {
+      if (!requireOwner()) return;
       status.textContent = 'Printing isn’t connected yet. This ticket has not been sent again.';
     });
     row.insertCell().append(button);
