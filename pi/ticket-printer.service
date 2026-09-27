@@ -1,0 +1,20 @@
+[Unit]
+Description=Anna TODO ticket printer
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=pi
+SupplementaryGroups=lp
+WorkingDirectory=/home/pi/remote-post-it/pi
+Environment=GOOGLE_APPLICATION_CREDENTIALS=/home/pi/.config/remote-post-it/service-account.json
+ExecStart=/usr/bin/python3 /home/pi/remote-post-it/pi/worker.py
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=90
+UMask=0077
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
