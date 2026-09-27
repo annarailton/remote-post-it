@@ -5,3 +5,7 @@ __pycache__/
 # Local environment and configuration
 .venv/
 .env
+
+# Firebase local tooling
+.firebase/
+firebase-debug.log*
