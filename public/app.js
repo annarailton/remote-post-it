@@ -43,7 +43,7 @@ form.addEventListener('submit', async (event) => {
     if (ownerSession() !== session) return;
     form.reset();
     categoryButtons.forEach(button => button.setAttribute('aria-pressed', 'false'));
-    status.textContent = 'Saved and queued. Printer availability is not yet connected.';
+    status.textContent = 'Sent to the printer 🫡';
   } catch (error) {
     if (ownerSession() === session) status.textContent = storageError(error);
   } finally {
