@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f6f2">
+    <title>History · Anna TODO ticket</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="history.js" type="module"></script>
+  </head>
+  <body>
+    <main class="history-page">
+      <header>
+        <p class="eyebrow">Do more</p>
+        <h1>Anna TODO ticket</h1>
+      </header>
+      <nav class="tabs" aria-label="Ticket pages">
+        <a href="index.html">New ticket</a>
+        <a href="history.html" aria-current="page">History</a>
+      </nav>
+      <section class="history-panel" aria-labelledby="history-heading">
+        <h2 id="history-heading">History</h2>
+        <p class="hint">Ticket history isn’t connected yet. Submitted tickets will appear here.</p>
+        <div class="table-scroll" role="region" aria-label="Ticket history table" tabindex="0">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Submitted</th>
+                <th scope="col">Ticket</th>
+                <th scope="col">Category</th>
+                <th scope="col">Deadline</th>
+                <th scope="col">Reprint?</th>
+              </tr>
+            </thead>
+            <tbody id="ticket-history">
+              <tr><td colspan="5" class="empty-history">No ticket history to show.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p id="history-status" class="status" role="status" aria-live="polite"></p>
+      </section>
+    </main>
+  </body>
+</html>

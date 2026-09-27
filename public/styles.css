@@ -49,6 +49,20 @@ button { cursor: pointer; touch-action: manipulation; }
 :focus-visible { outline: 3px solid #226fba; outline-offset: 3px; }
 .status { margin: 14px 0 0; color: #58665e; font-size: 14px; line-height: 1.5; }
 .status:empty { display: none; }
+.tabs { display: flex; gap: 6px; margin: 0 0 24px; border-bottom: 1px solid #bbc7be; }
+.tabs a { padding: 13px 18px; color: #58665e; text-decoration: none; border-bottom: 3px solid transparent; font-weight: 600; }
+.tabs a[aria-current="page"] { color: #145c35; border-bottom-color: #218447; }
+.history-page { max-width: 960px; }
+.history-panel { padding: 24px; background: #fff; border: 1px solid #dfe5dc; border-radius: 20px; }
+.history-panel h2 { margin: 0; font-size: 22px; }
+.table-scroll { overflow-x: auto; margin-top: 22px; }
+table { width: 100%; min-width: 660px; border-collapse: collapse; font-size: 14px; text-align: left; }
+th { padding: 12px; background: #f0f5ef; color: #405047; font-weight: 600; white-space: nowrap; }
+td { padding: 16px 12px; border-bottom: 1px solid #dfe5dc; vertical-align: top; line-height: 1.5; }
+td:nth-child(2) { min-width: 180px; max-width: 320px; white-space: pre-wrap; overflow-wrap: anywhere; }
+td:first-child, td:nth-child(4) { min-width: 125px; }
+.reprint { width: auto; min-height: 44px; padding: 10px 16px; border-radius: 8px; font-size: 14px; }
+.empty-history { text-align: center; padding: 36px 12px; color: #647168; }
 @media (hover: hover) {
   .category:hover { background: #f0f5ef; }
   .category[aria-pressed="true"]:hover { background: #d7eddd; }
@@ -57,4 +71,5 @@ button { cursor: pointer; touch-action: manipulation; }
 @media (max-width: 380px) {
   body { padding: 32px 16px; }
   form { padding: 22px 18px; }
+  .history-panel { padding: 20px 14px; }
 }
