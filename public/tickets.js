@@ -45,14 +45,21 @@ export async function reprintTicket(id) {
   return sdk.updateDoc(sdk.doc(jobs, id), { status: 'queued', sentAt: null, error: null });
 }
 
-export async function loadHistory() {
+export async function loadHistory(after = null) {
   const session = ownerSession();
   checkSession(session);
   const { sdk, jobs } = await database();
   checkSession(session);
-  const snapshot = await sdk.getDocs(sdk.query(jobs, sdk.orderBy('submittedAt', 'desc'), sdk.limit(50)));
+  const constraints = [sdk.orderBy('submittedAt', 'desc')];
+  // A document cursor also disambiguates tickets with identical timestamps.
+  if (after) constraints.push(sdk.startAfter(after));
+  const snapshot = await sdk.getDocs(sdk.query(jobs, ...constraints, sdk.limit(51)));
   checkSession(session);
-  return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, submittedAt: doc.data().submittedAt.toDate() }));
+  const docs = snapshot.docs.slice(0, 50);
+  return {
+    tickets: docs.map(doc => ({ ...doc.data(), id: doc.id, submittedAt: doc.data().submittedAt.toDate() })),
+    nextCursor: snapshot.docs.length > 50 ? docs.at(-1) : null,
+  };
 }
 
 export function storageError(error) {

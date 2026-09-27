@@ -49,7 +49,7 @@ export function renderHistory(tickets) {
     button.disabled = ticket.status === 'sending';
     button.setAttribute('aria-label', `Reprint: ${ticket.task}`);
     button.addEventListener('click', async () => {
-      if (button.disabled || !requireOwner()) return;
+      if (button.disabled || loading || !requireOwner()) return;
       const session = ownerSession();
       button.disabled = true;
       status.textContent = 'Saving reprint…';
@@ -57,7 +57,7 @@ export function renderHistory(tickets) {
         await reprintTicket(ticket.id);
         if (ownerSession() !== session) return;
         await refreshHistory(session);
-        if (ownerSession() === session) status.textContent = 'Reprint saved and queued.';
+        if (ownerSession() === session) status.textContent = 'Reprint queued.';
       } catch (error) {
         if (ownerSession() === session) status.textContent = storageError(error);
       } finally {
@@ -68,12 +68,66 @@ export function renderHistory(tickets) {
   }
 }
 
-async function refreshHistory(session) {
-  const tickets = await loadHistory();
-  if (ownerSession() === session) renderHistory(tickets);
+const previous = document.querySelector('#history-previous');
+const next = document.querySelector('#history-next');
+const pageLabel = document.querySelector('#history-page');
+let cursors = [null];
+let page = 0;
+let nextCursor = null;
+let loading = false;
+let request = 0;
+
+function updatePagination() {
+  previous.disabled = loading || page === 0;
+  next.disabled = loading || nextCursor === null;
+  pageLabel.textContent = `Page ${page + 1}`;
 }
 
+async function refreshHistory(session, targetPage = page) {
+  const currentRequest = ++request;
+  loading = true;
+  updatePagination();
+  try {
+    const result = await loadHistory(cursors[targetPage]);
+    if (ownerSession() !== session || request !== currentRequest) return;
+    page = targetPage;
+    nextCursor = result.nextCursor;
+    cursors = cursors.slice(0, page + 1);
+    if (nextCursor) cursors.push(nextCursor);
+    renderHistory(result.tickets);
+  } finally {
+    if (request === currentRequest) {
+      loading = false;
+      updatePagination();
+    }
+  }
+}
+
+async function changePage(targetPage) {
+  if (loading || !requireOwner()) return;
+  const session = ownerSession();
+  const status = document.querySelector('#history-status');
+  status.textContent = 'Loading history…';
+  try {
+    await refreshHistory(session, targetPage);
+  } catch (error) {
+    if (ownerSession() === session) status.textContent = storageError(error);
+  }
+}
+previous.addEventListener('click', () => {
+  if (!previous.disabled) return changePage(page - 1);
+});
+next.addEventListener('click', () => {
+  if (!next.disabled) return changePage(page + 1);
+});
+
 onOwnerChange(session => {
+  ++request;
+  cursors = [null];
+  page = 0;
+  nextCursor = null;
+  loading = false;
+  updatePagination();
   document.querySelector('#ticket-history').replaceChildren();
   const status = document.querySelector('#history-status');
   status.textContent = '';
