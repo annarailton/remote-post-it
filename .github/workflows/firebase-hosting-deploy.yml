@@ -1,0 +1,15 @@
+name: Deploy to Firebase Hosting
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  deploy:
+    if: ${{ github.actor == 'annarailton' && github.triggering_actor == 'annarailton' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_REMOTE_POST_IT_47117 }}
+          projectId: remote-post-it-47117
+          channelId: live
