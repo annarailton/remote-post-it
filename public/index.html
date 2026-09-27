@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f6f2">
+    <title>Anna TODO ticket</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">Do more</p>
+        <h1>Anna TODO ticket</h1>
+      </header>
+      <form id="ticket-form">
+        <div class="field">
+          <label for="task">Task description</label>
+          <textarea id="task" name="task" rows="3" required placeholder="What needs doing?"></textarea>
+        </div>
+        <fieldset class="field">
+          <legend>Category <span class="optional">Optional</span></legend>
+          <div class="categories" aria-describedby="category-hint">
+            <button type="button" class="category" aria-pressed="false" data-category="Council">Council</button>
+            <button type="button" class="category" aria-pressed="false" data-category="Work">Work</button>
+            <button type="button" class="category" aria-pressed="false" data-category="Life admin">Life admin</button>
+          </div>
+          <input type="hidden" id="category" name="category" value="">
+          <!-- <p id="category-hint" class="hint">Tap again to clear your choice.</p> -->
+        </fieldset>
+        <div class="field">
+          <label for="deadline">Deadline <span class="optional">Optional</span></label>
+          <input type="date" id="deadline" name="deadline">
+        </div>
+        <button class="print" type="submit">Print</button>
+        <p id="form-status" class="status" role="status" aria-live="polite"></p>
+      </form>
+    </main>
+  </body>
+</html>
