@@ -4,7 +4,6 @@ const panel = document.querySelector('#auth-panel');
 const content = document.querySelector('#protected-content');
 const message = document.querySelector('#auth-status');
 const signIn = document.querySelector('#sign-in');
-const signOutButton = document.querySelector('#sign-out');
 let authorized = false;
 let revision = 0;
 const ownerListeners = new Set();
@@ -116,17 +115,6 @@ async function initialize() {
       }
     });
 
-    signOutButton.addEventListener('click', async () => {
-      ++revision;
-      lock();
-      clearPrivateContent();
-      try {
-        await sdk.signOut(auth);
-        message.textContent = 'You’re signed out.';
-      } catch {
-        message.textContent = 'Sign-out could not complete. Please reload and try again.';
-      }
-    });
   } catch {
     lock();
     message.textContent = 'Sign-in is unavailable. Check your connection and reload.';
