@@ -33,7 +33,9 @@ textarea { resize: vertical; min-height: 106px; }
 textarea::placeholder { color: #778178; }
 .categories { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 button { cursor: pointer; touch-action: manipulation; }
-.category {
+.deadline-shortcuts { display: flex; gap: 8px; margin-top: 8px; }
+.deadline-shortcut { flex: 1; }
+.category, .deadline-shortcut {
   min-height: 48px;
   padding: 10px 3px;
   border: 1px solid #bbc7be;
@@ -63,7 +65,7 @@ td:first-child, td:nth-child(4) { min-width: 125px; }
 .reprint { width: auto; min-height: 44px; padding: 10px 16px; border-radius: 8px; font-size: 14px; }
 .empty-history { text-align: center; padding: 36px 12px; color: #647168; }
 @media (hover: hover) {
-  .category:hover { background: #f0f5ef; }
+  .category:hover, .deadline-shortcut:hover { background: #f0f5ef; }
   .category[aria-pressed="true"]:hover { background: #d7eddd; }
   .print:hover { background: #196d39; }
 }

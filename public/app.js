@@ -7,7 +7,17 @@ const form = document.querySelector('#ticket-form');
 const task = document.querySelector('#task');
 const category = document.querySelector('#category');
 const categoryButtons = document.querySelectorAll('[data-category]');
+const deadline = document.querySelector('#deadline');
 const status = document.querySelector('#form-status');
+
+for (const button of document.querySelectorAll('[data-deadline-offset]')) {
+  button.addEventListener('click', () => {
+    const date = new Date();
+    date.setDate(date.getDate() + Number(button.dataset.deadlineOffset));
+    deadline.value = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    deadline.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+}
 
 for (const button of categoryButtons) {
   button.addEventListener('click', () => {
@@ -34,7 +44,7 @@ form.addEventListener('submit', async (event) => {
   }
   const session = ownerSession();
   const controls = [...form.querySelectorAll('input, textarea, button')];
-  const ticket = { task: task.value, category: category.value, deadline: document.querySelector('#deadline').value };
+  const ticket = { task: task.value, category: category.value, deadline: deadline.value };
   saving = true;
   controls.forEach(control => { control.disabled = true; });
   status.textContent = 'Saving…';

@@ -39,6 +39,10 @@
         <div class="field">
           <label for="deadline">Deadline <span class="optional">Optional</span></label>
           <input type="date" min="0001-01-01" max="9999-12-31" id="deadline" name="deadline">
+          <div class="deadline-shortcuts">
+            <button type="button" class="deadline-shortcut" data-deadline-offset="0">Today</button>
+            <button type="button" class="deadline-shortcut" data-deadline-offset="1">Tomorrow</button>
+          </div>
         </div>
         <button class="print" type="submit">Print</button>
         <p id="form-status" class="status" role="status" aria-live="polite"></p>
