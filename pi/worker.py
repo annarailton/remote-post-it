@@ -322,9 +322,11 @@ def receipt(document: Document, width: int = 42) -> bytes:
              + [blank] * above
              + ['│' + line.center(inner_width) + '│' for line in lines]
              + [blank] * below + [border('└', '┘', deadline_label)])
-    # ESC a 1 centres the entire box across the printer's printable area;
+    # Add the print time below the box in the printer's local timezone.
+    lines.append(datetime.datetime.now().strftime('%d %b %Y %H:%M'))
+    # ESC a 1 centres the entire box and timestamp across the printable area;
     # line.center() above centres the task inside the box instead.
-    # ESC d 7 feeds paper AFTER the bottom border, outside the box. This adjusts
+    # ESC d 7 feeds paper AFTER the timestamp, outside the box. This adjusts
     # the bottom paper margin before cutting, not the internal vertical padding.
     # Seven lines is a calibration estimate from the sample ticket. The physical
     # gap between print head and cutter also affects top and bottom margins.
