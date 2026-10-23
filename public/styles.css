@@ -47,6 +47,7 @@ button { cursor: pointer; touch-action: manipulation; }
 }
 .category[aria-pressed="true"] { color: #145c35; background: #e4f3e8; border: 2px solid #247344; padding: 9px 2px; }
 .hint { margin: 9px 0 0; color: #647168; font-size: 12px; line-height: 1.5; }
+.print-shortcut { text-align: center; }
 .print { width: 100%; min-height: 58px; border: 0; border-radius: 12px; background: #218447; color: white; font-size: 18px; font-weight: 650; }
 :focus-visible { outline: 3px solid #226fba; outline-offset: 3px; }
 .status { margin: 14px 0 0; color: #58665e; font-size: 14px; line-height: 1.5; }
