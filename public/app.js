@@ -34,6 +34,13 @@ form.addEventListener('input', () => {
   status.textContent = '';
 });
 
+task.addEventListener('keydown', (event) => {
+  if (event.metaKey && event.key === 'Enter') {
+    event.preventDefault();
+    form.requestSubmit();
+  }
+});
+
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
   if (saving || !requireOwner()) return;
