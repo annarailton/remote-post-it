@@ -359,6 +359,8 @@ def print_bytes(fd: int, payload: bytes, timeout: float = 30) -> None:
 
     Call from the main thread on Unix; this temporarily uses the SIGALRM timer.
     The descriptor remains open for the caller to close.
+    Send ESC @ separately and allow half a second before ticket content, to
+    give the printer time to initialise after being idle.
 
     Args:
         fd: Open printer file descriptor.
@@ -386,12 +388,16 @@ def print_bytes(fd: int, payload: bytes, timeout: float = 30) -> None:
     previous_handler = signal.signal(signal.SIGALRM, timed_out)
     signal.setitimer(signal.ITIMER_REAL, timeout)
     try:
-        sent = 0
-        while sent < len(payload):
-            count = os.write(fd, payload[sent:])
-            if count == 0:
-                raise OSError('Printer accepted zero bytes')
-            sent += count
+        chunks = (payload[:2], payload[2:]) if payload.startswith(b'\x1b@') else (payload,)
+        for index, chunk in enumerate(chunks):
+            if index:
+                time.sleep(0.5)
+            sent = 0
+            while sent < len(chunk):
+                count = os.write(fd, chunk[sent:])
+                if count == 0:
+                    raise OSError('Printer accepted zero bytes')
+                sent += count
     finally:
         signal.setitimer(signal.ITIMER_REAL, 0)
         signal.signal(signal.SIGALRM, previous_handler)
