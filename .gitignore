@@ -9,3 +9,10 @@ __pycache__/
 # Firebase local tooling
 .firebase/
 firebase-debug.log*
+
+# Pi credentials (keep the real key outside the repository)
+service-account.json
+*-firebase-adminsdk-*.json
+
+# Local type-checker cache
+.mypy_cache/
